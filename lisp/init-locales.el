@@ -40,6 +40,17 @@
 (setq projectile-project-search-path '("~/projects/"))
 (setq org-babel-check-confirm-evaluate -1)
 
+(defun copy-from-osx ()
+  (shell-command-to-string "pbpaste"))
+(defun paste-to-osx (text &optional push)
+  (let ((process-connection-type nil))
+    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+      (process-send-string proc text)
+      (process-send-eof proc))))
+
+(setq interprogram-cut-function 'paste-to-osx)
+(setq interprogram-paste-function 'copy-from-osx)
+
 (after-load 'python
   (elpy-enable)
   )
